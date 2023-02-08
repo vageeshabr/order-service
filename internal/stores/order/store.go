@@ -1,8 +1,7 @@
 package order
 
 import (
-	"context"
-	"database/sql"
+	"developer.zopsmart.com/go/gofr/pkg/gofr"
 	"github.com/vageeshabr/order-service/internal/filters"
 	"github.com/vageeshabr/order-service/internal/models"
 	"github.com/vageeshabr/order-service/internal/stores"
@@ -12,14 +11,13 @@ import (
 const tableName = "orders"
 
 type store struct {
-	db *sql.DB
 }
 
-func New(db *sql.DB) *store {
-	return &store{db: db}
+func New() *store {
+	return &store{}
 }
 
-func (s *store) Find(ctx context.Context, f filters.Order) (orders []*models.Order, err error) {
+func (s *store) Find(ctx gofr.Context, f filters.Order) (orders []*models.Order, err error) {
 
 	var where []string
 	var args []interface{}
@@ -39,7 +37,7 @@ func (s *store) Find(ctx context.Context, f filters.Order) (orders []*models.Ord
 		query += " where " + strings.Join(where, " AND ")
 	}
 
-	rows, err := s.db.QueryContext(ctx, query, args...)
+	rows, err := ctx.DB().QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +58,7 @@ func (s *store) Find(ctx context.Context, f filters.Order) (orders []*models.Ord
 	return
 }
 
-func (s *store) Create(ctx context.Context, o *stores.OrderCreate) (*models.Order, error) {
+func (s *store) Create(ctx gofr.Context, o *stores.OrderCreate) (*models.Order, error) {
 
 	return nil, nil
 }

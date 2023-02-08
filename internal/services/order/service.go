@@ -1,7 +1,7 @@
 package order
 
 import (
-	"context"
+	"developer.zopsmart.com/go/gofr/pkg/gofr"
 	"errors"
 	"fmt"
 	"github.com/vageeshabr/order-service/internal/filters"
@@ -25,7 +25,7 @@ func (i InvalidParam) Error() string {
 	return fmt.Sprintf("param '%s' is invalid", i.Param)
 }
 
-func (s *service) Find(ctx context.Context, customerId int, date string) ([]*models.Order, error) {
+func (s *service) Find(ctx gofr.Context, customerId int, date string) ([]*models.Order, error) {
 	if customerId <= 0 {
 		return nil, InvalidParam{Param: "customerId"}
 	}
@@ -40,6 +40,6 @@ func (s *service) Find(ctx context.Context, customerId int, date string) ([]*mod
 	return res, nil
 }
 
-func (s *service) Create(ctx context.Context, o *stores.OrderCreate) (*models.Order, error) {
+func (s *service) Create(ctx gofr.Context, o *stores.OrderCreate) (*models.Order, error) {
 	return nil, nil
 }

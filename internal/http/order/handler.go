@@ -1,14 +1,12 @@
 package order
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
+	"developer.zopsmart.com/go/gofr/pkg/errors"
+	"developer.zopsmart.com/go/gofr/pkg/gofr"
+	"developer.zopsmart.com/go/gofr/pkg/gofr/types"
 	"github.com/vageeshabr/order-service/internal/models"
 	"github.com/vageeshabr/order-service/internal/services"
-	"net/http"
 	"strconv"
-	"time"
 )
 
 type handler struct {
@@ -25,39 +23,27 @@ type listResponse struct {
 	} `json:"data"`
 }
 
-func (h *handler) GET(w http.ResponseWriter, r *http.Request) {
+func (h *handler) Index(c *gofr.Context) (interface{}, error) {
 	customerId := 0
-	if v := r.URL.Query().Get("customerId"); v != "" {
+
+	if v := c.Param("customerId"); v != "" {
 		id, err := strconv.Atoi(v)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(`{"error":"param customerId is not int"}`))
-			return
+			return nil, errors.InvalidParam{Param: []string{"customerId"}}
 		}
 		customerId = id
 	}
-
-	ctx, _ := context.WithTimeout(r.Context(), time.Second)
-
-	orders, err := h.svc.Find(ctx, customerId, r.URL.Query().Get("date"))
-
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(fmt.Sprintf(`{"error":"%s"}`, err.Error())))
-		return
-	}
-
-	res := listResponse{
-		Data: struct {
-			Orders []*models.Order `json:"orders"`
-		}{
-			Orders: orders,
-		},
-	}
-
-	json.NewEncoder(w).Encode(res)
+	return types.Response{Data: customerId}, nil
 }
 
-func (h *handler) POST(w http.ResponseWriter, r *http.Request) {
+func (h *handler) Create(ctx *gofr.Context) (interface{}, error) {
+
+	return nil, nil
+
+}
+
+func (h *handler) Delete(ctx *gofr.Context) (interface{}, error) {
+
+	return nil, nil
 
 }

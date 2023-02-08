@@ -1,12 +1,12 @@
 package stores
 
 import (
-	"context"
+	"developer.zopsmart.com/go/gofr/pkg/gofr"
 	"github.com/vageeshabr/order-service/internal/filters"
 	"github.com/vageeshabr/order-service/internal/models"
 )
 
 type OrderStorer interface {
-	Find(ctx context.Context, f filters.Order) ([]*models.Order, error)
-	Create(ctx context.Context, o *OrderCreate) (*models.Order, error)
+	Find(ctx gofr.Context, f filters.Order) ([]*models.Order, error)
+	Create(ctx gofr.Context, o *OrderCreate) (*models.Order, error)
 }
